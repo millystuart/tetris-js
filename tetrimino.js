@@ -9,6 +9,8 @@ const GREEN     = "#00ff00";
 const PURPLE    = "#800080";
 const RED       = "#ff0000";
 
+const ROTATIONS = 4; // Each tetrimino will always four rotation states (0, 90, 180, 270 degrees)
+
 // Below is an exported object containing each tetrimino's four rotation states and corresponding colour.
 // Each rotation state is represented by a 2D-array, where 1 indicates the presence of a block.
 export const TETRIMINOS = {
@@ -149,4 +151,13 @@ export function drawTetrimino(tetrimino, rotationIndex, posRow, posCol, gridBloc
             }    
         }
     }
+}
+
+// Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
+// These values will be returned and passed into the drawTetrimino function called in index.js.
+export function generateRandomTetrimino() {
+    const tetriminoKeys = Object.keys(TETRIMINOS); // Contains ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+    const randomTetrimino = tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)];
+    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Random number between 0 and 3
+    return {randomTetrimino, randomRotation}
 }
