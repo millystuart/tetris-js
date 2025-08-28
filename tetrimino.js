@@ -134,30 +134,32 @@ function drawBlock(blockRow, blockCol, blockColour, gridBlocks) {
 }
 
 // Function to draw a tetrimino on the grid at a given position/rotation
-export function drawTetrimino(tetrimino, rotationIndex, posRow, posCol, gridBlocks) {
-    const shape = tetrimino.rotations[rotationIndex];
-    
-    for (let row = 0; row < shape.length; row++) { // For each row in the tetrimino's shape
-        for (let col = 0; col < shape[row].length; col++) { // For each column in that row
-            if (shape[row][col] === 1) {
+export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks) {    
+    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+        for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
+            if (tetriminoShape[row][col] === 1) {
                 // Calculate the corresponding row/column in the grid based on desired position
                 const gridPosRow = posRow + row;
                 const gridPosCol = posCol + col;
                 
                 // Check if the calculated position is within the grid boundaries
                 if ((gridPosRow >= 0 && gridPosRow < GRID_ROWS) && (gridPosCol >= 0 && gridPosCol < GRID_COLS)) {
-                    drawBlock(gridPosRow, gridPosCol, tetrimino.colour, gridBlocks);
-                }   
-            }    
+                    drawBlock(gridPosRow, gridPosCol, colour, gridBlocks);
+                }
+                // TODO: Handle case where part of tetrimino is out of bounds (e.g., at top or sides of grid)
+            }
         }
     }
 }
 
 // Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
-// These values will be returned and passed into the drawTetrimino function called in index.js.
+// This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
 export function generateRandomTetrimino() {
-    const tetriminoKeys = Object.keys(TETRIMINOS); // Contains ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
-    const randomTetrimino = tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)];
-    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Random number between 0 and 3
-    return {randomTetrimino, randomRotation}
+    const tetriminoKeys = Object.keys(TETRIMINOS);
+    const randomTetriminoKey = tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]; // Randomly select one of the seven tetrimino keys
+    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
+    const randomTetriminoShape = TETRIMINOS[randomTetriminoKey].rotations[randomRotation]; // Select the tetrimino's shape based on generated values
+    const tetriminoColour = TETRIMINOS[randomTetriminoKey].colour;
+
+    return [randomTetriminoShape, tetriminoColour];
 }
