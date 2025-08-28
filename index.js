@@ -1,7 +1,7 @@
 import {generateGrid} from "./grid.js";
 
 const GRID = document.getElementById("grid");
-const ROWS = 20;
-const COLS = 10;
+const GRID_ROWS = 20;
+const GRID_COLS = 10;
 
-generateGrid(ROWS, COLS, GRID);
+generateGrid(GRID_ROWS, GRID_COLS, GRID);
