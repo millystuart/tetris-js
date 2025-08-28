@@ -7,6 +7,8 @@ const GREEN     = (0,250,0);
 const PURPLE    = (185,0,255);
 const RED       = (255,0,0);
 
+// Below is an exported object containing each tetrimino's four rotation states and correpsonding colour.
+// Each rotation state is represented by a 2D array, where 1 indicates the presence of a block.
 export const TETRIMINOS = {
     I: {
         rotations: [[[0, 0, 0, 0],
@@ -61,8 +63,8 @@ export const TETRIMINOS = {
     },
 
     O: {
-        rotations: [[[1, 1]
-                     [1, 1]]
+        rotations: [[[1, 1],
+                     [1, 1]],
                     [[1, 1],
                      [1, 1]],
                     [[1, 1],
