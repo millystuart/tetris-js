@@ -1,9 +1,11 @@
 import {initialiseGrid, GRID_COLS, GRID_ROWS} from "./grid.js";
-import {TETRIMINOS, drawTetrimino} from "./tetrimino.js";
+import {TETRIMINOS, drawTetrimino, generateRandomTetrimino} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
 
 // gridBlocks will hold the state of the grid
 let gridBlocks = initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
+// Returns an array holding the shape and colour of a random tetrimino
+let tetrimino = generateRandomTetrimino();
 
-drawTetrimino(TETRIMINOS.T, 0, 9, 4, gridBlocks);
+drawTetrimino(tetrimino[0], tetrimino[1], 0, 4, gridBlocks);
