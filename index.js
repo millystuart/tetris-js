@@ -1,8 +1,9 @@
-import {initialiseGrid} from "./grid.js";
-import {TETRIMINOS} from "./tetrimino.js";
+import {initialiseGrid, GRID_COLS, GRID_ROWS} from "./grid.js";
+import {TETRIMINOS, drawTetrimino} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
-const GRID_ROWS = 20;
-const GRID_COLS = 10;
 
-initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
+// gridBlocks will hold the state of the grid
+let gridBlocks = initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
+
+drawTetrimino(TETRIMINOS.T, 0, 9, 4, gridBlocks);
