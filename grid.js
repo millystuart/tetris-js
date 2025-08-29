@@ -26,10 +26,11 @@ export function initialiseGrid(rows, cols, grid) {
 // This functions takes our 2D-array of blocks and resets them all to the default colour (white).
 // Note that clearGrid does not "clear" the grid by removing blocks, it simply resets their colour.
 export function clearGrid(gridBlocks) {
-    for (let row in gridBlocks) {
-        for (let blockObject in row) {
+    for (let row = 0; row < gridBlocks.length; row++) {
+        for (let col = 0; col < gridBlocks[row].length; col++) {
+            let blockObject = gridBlocks[row][col];
             blockObject.occupied = false;
             drawBlock(blockObject.blockElement, WHITE);
         }
-    }
+    }    
 }
