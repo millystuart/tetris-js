@@ -132,7 +132,7 @@ const TETRIMINOS = {
     },
 }
 
-function drawBlock(block, blockColour) {
+export function drawBlock(block, blockColour) {
     block.style.backgroundColor = blockColour;
 }
 
