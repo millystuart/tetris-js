@@ -30,3 +30,9 @@ export function clearGrid(gridBlocks) {
         }
     }
 }
+
+export function descendTetrimino(gridBlocks) {
+    // start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
+    clearGrid(gridBlocks);
+    
+}
