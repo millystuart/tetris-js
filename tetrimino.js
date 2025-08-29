@@ -159,7 +159,7 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks
                 // Check if the calculated position is already occupied
                 if (isValidBlockToOccupy(blockToDraw, blockPosRow, blockPosCol)) {
                     blockToDraw.occupied = true; // Mark the block as occupied
-                    drawBlock(blockToDraw.blockElement, colour, gridBlocks); // Draw the block on the grid
+                    drawBlock(blockToDraw.blockElement, colour); // Draw the block on the grid
                 }
                 // TODO: Handle case where part of tetrimino is out of bounds (e.g., at top or sides of grid)
             }
