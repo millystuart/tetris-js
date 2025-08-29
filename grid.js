@@ -11,9 +11,10 @@ export function initialiseGrid(rows, cols, grid) {
         let rowBlocks = []; // Array to hold each block in the current row
 
         for (let col = 0; col < cols; col++) {
-            let block = document.createElement("div");
-            block.classList.add("block");
-            grid.appendChild(block);
+            let blockElement = document.createElement("div");
+            blockElement.classList.add("block");
+            grid.appendChild(blockElement);
+            let block = {blockElement, occupied: false};
             rowBlocks.push(block);
         }
         gridBlocks.push(rowBlocks);
@@ -24,15 +25,11 @@ export function initialiseGrid(rows, cols, grid) {
 // This functions takes our 2D-array of blocks and resets them all to the default colour (white).
 // Note that clearGrid does not "clear" the grid by removing blocks, it simply resets their colour.
 export function clearGrid(gridBlocks) {
-    for (let row of gridBlocks) {
-        for (let col of row) {
-            drawBlock(row, col, WHITE, gridBlocks);
-        }
-    }
+    drawBlock(row, col, WHITE, gridBlocks);
 }
 
 export function descendTetrimino(gridBlocks) {
     // start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
     clearGrid(gridBlocks);
-    
+
 }
