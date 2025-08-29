@@ -1,13 +1,13 @@
 import {GRID_ROWS, GRID_COLS} from "./grid.js";
 
 // Hex colour values for each tetrimino
-const TURQUOISE = "#40e0d0ff";
-const BLUE      = "#0000ff";
-const ORANGE    = "#ffa500";
-const YELLOW    = "#ffff00";
-const GREEN     = "#00ff00";
-const PURPLE    = "#800080";
-const RED       = "#ff0000";
+const TURQUOISE = "#c3eee8ff";
+const BLUE      = "#97d3fcff";
+const ORANGE    = "#f8d799ff";
+const YELLOW    = "#f5f5b7ff";
+const GREEN     = "#a5f595ff";
+const PURPLE    = "#e2bbfcff";
+const RED       = "#ffbebeff";
 
 const ROTATIONS = 4; // Each tetrimino will always four rotation states (0, 90, 180, 270 degrees)
 
