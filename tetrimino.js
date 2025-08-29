@@ -17,51 +17,51 @@ const TETRIMINOS = {
     I: {
         rotations: [[[1, 1, 1, 1]],
 
-                    [      [1],
-                           [1],
-                           [1],
-                           [1]   ],
+                    [[1],
+                     [1],
+                     [1],
+                     [1]],
 
                     [[1, 1, 1, 1]],
 
-                    [   [1],
-                        [1],
-                        [1],
-                        [1]      ]],
+                    [[1],
+                     [1],
+                     [1],
+                     [1]]],
         colour: TURQUOISE
     },
 
     J: {
-        rotations: [[[1],
+        rotations: [[[1, 0, 0],
                      [1, 1, 1]],
 
                     [[1, 1],
-                     [1],
-                     [1]      ],
+                     [1, 0],
+                     [1, 0]],
 
                     [[1, 1, 1],
-                           [1]],
+                     [0, 0, 1]],
 
-                    [   [1],
-                        [1],
-                     [1, 1]   ]],
+                    [[0, 1],
+                     [0, 1],
+                     [1, 1]]],
         colour: BLUE
     },
 
     L: {
-        rotations: [[      [1],
+        rotations: [[[0, 0, 1],
                      [1, 1, 1]],
 
-                    [   [1],
-                        [1],
-                        [1, 1]],
+                    [[1, 0],
+                     [1, 0],
+                     [1, 1]],
 
                     [[1, 1, 1],
-                     [1]      ],
+                     [1, 0, 0]],
 
                     [[1, 1],
-                        [1],
-                        [1]   ]],
+                     [0, 1],
+                     [0, 1]]],
         colour: ORANGE
     },
 
@@ -81,53 +81,53 @@ const TETRIMINOS = {
     },
 
     S: {
-        rotations: [[   [1, 1],
-                     [1, 1]   ],
+        rotations: [[[0, 1, 1],
+                     [1, 1, 0]],
 
-                    [   [1],
-                        [1, 1],
-                           [1]],
-
-                    [   [1, 1],
-                     [1, 1]   ],
-
-                    [[1],
+                    [[1, 0],
                      [1, 1],
-                        [1]   ]],
+                     [0, 1]],
+
+                    [[0, 1, 1],
+                     [1, 1, 0]],
+
+                    [[1, 0],
+                     [1, 1],
+                     [0, 1]]],
         colour: GREEN
     },
 
     T: {
-        rotations: [[   [1],
+        rotations: [[[0, 1, 0],
                      [1, 1, 1]],
 
-                    [   [1],
-                        [1, 1],
-                        [1]   ],
+                    [[1, 0],
+                     [1, 1],
+                     [1, 0]],
 
                     [[1, 1, 1],
-                        [1]   ],
+                     [0, 1, 0]],
 
-                    [   [1],
+                    [[0, 1],
                      [1, 1],
-                        [1]   ]],
+                     [0, 1]]],
         colour: PURPLE
     },
 
     Z: {
-        rotations: [[[1, 1],
-                        [1, 1]],
+        rotations: [[[1, 1, 0],
+                     [0, 1, 1]],
 
-                    [      [1],
-                        [1, 1],
-                        [1]   ],
-
-                    [[1, 1],
-                        [1, 1]],
-                        
-                    [   [1],
+                    [[0, 1],
                      [1, 1],
-                     [1]      ]],
+                     [1, 0]],
+
+                    [[1, 1, 0],
+                     [0, 1, 1]],
+                        
+                    [[0, 1],
+                     [1, 1],
+                     [1, 0]]],
         colour: RED
     },
 }
@@ -147,7 +147,7 @@ function isValidBlockToOccupy(gridBlock, row, col) {
 
 // Function to draw a tetrimino on the grid at a given position/rotation
 // drawTetrimino needs to return an updated gridBlocks array with the state of the board now that the tetrimino has been drawn
-export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks) {    
+export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks) {
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
             if (tetriminoShape[row][col] === 1) {
@@ -172,10 +172,10 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks
 // This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
 export function generateRandomTetrimino() {
     const tetriminoKeys = Object.keys(TETRIMINOS);
-    const randomTetriminoKey = tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]; // Randomly select one of the seven tetrimino keys
+    const randomTetrimino = TETRIMINOS[tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]]; // Randomly select one of the seven tetrimino keys    
     const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
-    const randomTetriminoShape = TETRIMINOS[randomTetriminoKey].rotations[randomRotation]; // Select the tetrimino's shape based on generated values
-    const tetriminoColour = TETRIMINOS[randomTetriminoKey].colour;
+    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
+    const tetriminoColour = randomTetrimino.colour;
 
-    return [randomTetriminoShape, tetriminoColour];
+    return [selectedTetriminoShape, tetriminoColour];
 }
