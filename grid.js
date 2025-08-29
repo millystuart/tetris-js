@@ -14,7 +14,7 @@ export function initialiseGrid(rows, cols, grid) {
             let blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
-            let block = {blockElement, occupied: false};
+            let block = {blockElement: blockElement, occupied: false};
             rowBlocks.push(block);
         }
         gridBlocks.push(rowBlocks);
