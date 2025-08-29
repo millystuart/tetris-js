@@ -13,7 +13,7 @@ const ROTATIONS = 4; // Each tetrimino will always four rotation states (0, 90, 
 
 // Below is an exported object containing each tetrimino's four rotation states and corresponding colour.
 // Each rotation state is represented by a 2D-array, where 1 indicates the presence of a block.
-export const TETRIMINOS = {
+const TETRIMINOS = {
     I: {
         rotations: [[[0, 0, 0, 0],
                      [1, 1, 1, 1],

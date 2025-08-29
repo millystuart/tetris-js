@@ -1,5 +1,5 @@
 import {initialiseGrid, GRID_COLS, GRID_ROWS} from "./grid.js";
-import {TETRIMINOS, drawTetrimino, generateRandomTetrimino} from "./tetrimino.js";
+import {drawTetrimino, generateRandomTetrimino} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
 
