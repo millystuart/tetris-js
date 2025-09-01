@@ -169,7 +169,7 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
                 else {
                     // as soon as we detect that there will be a vertical collision, we are at the point where we can place the block and 
                     placeTetrimino(tetriminoShape, colour, posRow, posCol);
-                    return;
+                    return true; // this means that the current tetrimino has now completed its lifecycle and a new tetrimino can become active
                 }
             }
         }
