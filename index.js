@@ -1,5 +1,5 @@
 import {initialiseGrid, clearGrid, GRID_COLS, GRID_ROWS, renderGrid} from "./grid.js";
-import {drawActiveTetrimino, generateRandomTetrimino} from "./tetrimino.js";
+import {drawTetrimino, generateRandomTetrimino, checkLeftCollision, checkRightCollision, checkVerticalCollision} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
 globalThis.gridBlocks = []; // GLOBAL array to hold each block on the grid
@@ -21,13 +21,17 @@ function gameLoop() {
     clearGrid();
     // Render all placed blocks onto the grid
     renderGrid();
-    
-    if (drawActiveTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol)) {
+
+    if (checkVerticalCollision(activeTetrimino[0], currentRow, currentCol) === true) {
+        // If there is a vertical collision, the piece must be placed
+        const toBePlaced = true;
+        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, toBePlaced)
         // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
         generateNewActiveTetrimino();
     }
     else {
-        // If false, continue dropping the active tetrimino.
+        const notPlaced = false;
+        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, notPlaced)
         currentRow++;
     }
 }

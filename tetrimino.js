@@ -150,8 +150,7 @@ export function drawBlock(block) {
 
 // Function to draw a tetrimino on the grid at a given position/rotation
 // drawTetrimino needs to return an updated gridBlocks array with the state of the board now that the tetrimino has been drawn
-export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
-    let validBlocks = []; // will store all of the blocks that can move to a valid position
+export function drawTetrimino(tetriminoShape, colour, posRow, posCol, toBePlaced) {
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
             if (tetriminoShape[row][col] === 1) {
@@ -160,35 +159,10 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
                 const blockPosCol = posCol + col;
                 const blockToDraw = gridBlocks[blockPosRow][blockPosCol];
                 blockToDraw.colour = colour
-                
-                // Check if the calculated position is already occupied
-                // NOTE: you are currently only checking for a vertical collision
-                if (checkVerticalCollision(blockPosRow, blockPosCol) === false) {
-                    validBlocks.push(blockToDraw);
+                if (toBePlaced) {
+                    blockToDraw.occupied = true;
                 }
-                else {
-                    // as soon as we detect that there will be a vertical collision, we are at the point where we can place the block and 
-                    placeTetrimino(tetriminoShape, colour, posRow, posCol);
-                    return true; // this means that the current tetrimino has now completed its lifecycle and a new tetrimino can become active
-                }
-            }
-        }
-    }
-    for (const validBlock of validBlocks) {
-        drawBlock(validBlock); // Draw the valid blocks on the grid since we know none are going to collide with anything
-    }
-}
-
-function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
-    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
-        for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
-            if (tetriminoShape[row][col] === 1) {
-                const blockPosRow = posRow + row;
-                const blockPosCol = posCol + col;
-                const blockToPlace = gridBlocks[blockPosRow][blockPosCol];
-                blockToPlace.colour = colour;
-                blockToPlace.occupied = true;
-                drawBlock(blockToPlace);
+                drawBlock(blockToDraw);
             }
         }
     }
@@ -196,8 +170,8 @@ function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
 
 // Note that we only need to check the bottom-most row of the shape
 export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
-    const bottomRowIndex = tetriminoShape.length;
-    for (let col = 0; col < tetriminoShape[bottomRowIndex].length; col++) { // For each column in the bottom row
+    const bottomRowIndex = tetriminoShape.length - 1;
+    for (let col = 0; col < (tetriminoShape[bottomRowIndex]).length; col++) { // For each column in the bottom row
         if (tetriminoShape[bottomRowIndex][col] === 1) {
             const blockPosRow = rowToCheck + bottomRowIndex;
             const blockPosCol = colToCheck + col;
@@ -233,7 +207,7 @@ export function checkLeftCollision(tetriminoShape, rowToCheck, colToCheck) {
 }
 
 export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
-    const rightmostColIndex = tetriminoShape[0].length; // Zero is arbitrary
+    const rightmostColIndex = tetriminoShape[0].length - 1; // Zero is arbitrary
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         if (tetriminoShape[row][rightmostColIndex] === 1) {
             const blockPosRow = rowToCheck + row;
