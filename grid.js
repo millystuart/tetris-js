@@ -22,12 +22,13 @@ export function initialiseGrid(rows, cols, grid) {
 
 // This functions takes our 2D-array of blocks and resets them all to the default colour (white).
 // Note that clearGrid does not "clear" the grid by removing blocks, it simply resets their colour and sets their occupied value to false
-export function clearGrid(gridBlocks) {
+export function clearGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < gridBlocks[row].length; col++) {
             let blockObject = gridBlocks[row][col];
             blockObject.occupied = false;
-            drawBlock(blockObject.blockElement, WHITE);
+            blockObject.colour = WHITE;
+            drawBlock(blockObject);
         }
     }    
 }
@@ -37,7 +38,7 @@ export function renderGrid() { // uses the gridBlocks array to render the grid i
         for (let col = 0; (col < gridBlocks[row]).length; col++) {
             block = gridBlocks[row][col]
             if (block.occupied === true) {
-                drawBlock(block.blockElement)
+                drawBlock(block.blockElement, )
             }
         }
     }

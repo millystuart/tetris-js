@@ -132,8 +132,8 @@ const TETRIMINOS = {
     },
 }
 
-export function drawBlock(block, blockColour) {
-    block.style.backgroundColor = blockColour;
+export function drawBlock(block) {
+    block.blockElement.style.backgroundColor = block.colour;
 }
 
 function isValidBlockToOccupy(gridBlock, row, col) {
@@ -155,11 +155,12 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol) {
                 const blockPosRow = posRow + row;
                 const blockPosCol = posCol + col;
                 const blockToDraw = gridBlocks[blockPosRow][blockPosCol];
+                blockToDraw.colour = colour
                 
                 // Check if the calculated position is already occupied
                 if (isValidBlockToOccupy(blockToDraw, blockPosRow, blockPosCol)) {
                     blockToDraw.occupied = true; // Mark the block as occupied
-                    drawBlock(blockToDraw.blockElement, colour); // Draw the block on the grid
+                    drawBlock(blockToDraw); // Draw the block on the grid
                 }
                 // TODO: Handle case where part of tetrimino is out of bounds (e.g., at top or sides of grid)
             }
