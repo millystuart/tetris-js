@@ -163,25 +163,46 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
                 
                 // Check if the calculated position is already occupied
                 // NOTE: you are currently only checking for a vertical collision
-                if (checkVerticalCollision === false) {
-                    drawBlock(blockToDraw); // Draw the block on the grid
+                if (checkVerticalCollision(blockPosRow, blockPosCol) === false) {
+                    validBlocks.push(blockToDraw);
                 }
                 else {
-                    commitTetrimino(tetriminoShape, colour, posRow, posCol);
+                    // as soon as we detect that there will be a vertical collision, we are at the point where we can place the block and 
+                    placeTetrimino(tetriminoShape, colour, posRow, posCol);
+                    return;
                 }
             }
         }
+    }
+    for (const validBlock of validBlocks) {
+        drawBlock(validBlock); // Draw the valid blocks on the grid since we know none are going to collide with anything
+    }
+}
+
+function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
+    console.log("I am being called")
+    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+        for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
+            const blockPosRow = posRow + row;
+            const blockPosCol = posCol + col;
+            const blockToPlace = gridBlocks[blockPosRow][blockPosCol];
+            blockToPlace.colour = colour;
+            blockToPlace.occupied = true;
+            drawBlock(blockToPlace);
+        }
+
     }
 }
 
 function checkVerticalCollision(blockPosRow, blockPosCol) {
     // If there is a vertical collision, the block must be placed.
-    if ((blockPosRow + 1) < GRID_ROWS) { // Means that we're NOT at the bottom of the grid yet
-        if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === false) { // Means that there is NOT an occupied block below
-            return false
-        }
+    if ((blockPosRow + 1) >= GRID_ROWS) { // Means that we're at the bottom of the grid
+        return true
     }
-    return true
+    else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Means that there is an occupied block below
+            return true
+        }
+    return false
 }
 
 // The horizontal collisions mean that the block is not allowed to move the corresponding direction (since there is something already there)
