@@ -178,3 +178,22 @@ export function generateRandomTetrimino() {
 
     return [selectedTetriminoShape, tetriminoColour];
 }
+
+function checkVerticalCollision(blockPosRow, blockPosCol) {
+    // If there is a vertical collision, the block must be placed.
+    if ((blockPosRow + 1) < GRID_ROWS) { // Means that we're at the bottom of the grid yet
+        if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === false) { // Means that there is an occupied block below
+            return false
+        }
+    }
+    return true
+}
+
+// The horizontal collisions mean that the block is not allowed to move the corresponding direction (since there is something already there)
+function checkHorizontalLeftCollision(blockPosRow, blockPosCol) {
+
+}
+
+function checkHorizontalRightCollision(blockPosRow, blockPosCol) {
+    
+}
