@@ -180,7 +180,6 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
 }
 
 function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
-    console.log("I am being called")
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
             if (tetriminoShape[row][col] === 1) {
@@ -192,36 +191,61 @@ function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
                 drawBlock(blockToPlace);
             }
         }
-
     }
 }
 
-function checkVerticalCollision(blockPosRow, blockPosCol) {
-    // If there is a vertical collision, the block must be placed.
-    if ((blockPosRow + 1) >= GRID_ROWS) { // Means that we're at the bottom of the grid
-        return true
-    }
-    else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Means that there is an occupied block below
-            return true
+// Note that we only need to check the bottom-most row of the shape
+export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
+    const bottomRowIndex = tetriminoShape.length;
+    for (let col = 0; col < tetriminoShape[bottomRowIndex].length; col++) { // For each column in the bottom row
+        if (tetriminoShape[bottomRowIndex][col] === 1) {
+            const blockPosRow = rowToCheck + bottomRowIndex;
+            const blockPosCol = colToCheck + col;
+
+            // If there is a vertical collision, the block must be placed.
+            if ((blockPosRow + 1) >= GRID_ROWS) { // Means that we're at the bottom of the grid
+                return true
+            }
+            else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Means that there is an occupied block below
+                return true
+            }
         }
+    }
     return false
 }
 
-// The horizontal collisions mean that the block is not allowed to move the corresponding direction (since there is something already there)
-function checkHorizontalLeftCollision(blockPosRow, blockPosCol) {
-    if ((blockPosCol - 1) > 0) { // Means that we're NOT at the leftmost column
-        if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === false) { // Means that there is NOT an occupied block to the left
-            return false
+// for this function, we only need to check the leftmost column of the shape
+export function checkLeftCollision(tetriminoShape, rowToCheck, colToCheck) {
+    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+        if (tetriminoShape[row][0] === 1) {
+            const blockPosRow = rowToCheck + row;
+            const blockPosCol = colToCheck;
+
+            if ((blockPosCol - 1) < 0) { // Means that we're at the leftmost column
+                return true;
+            }
+            else if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === true) { // Means that there is an occupied block to the left
+                return true
+            }
         }
     }
-    return true
+    return false
 }
 
-function checkHorizontalRightCollision(blockPosRow, blockPosCol) {
-    if ((blockPosCol + 1) < GRID_COLS) { // Means that we're NOT at the rightmost column
-        if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === false) { // Means that there is NOT an occupied block to the right
-            return false
+export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
+    const rightmostColIndex = tetriminoShape[0].length; // Zero is arbitrary
+    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+        if (tetriminoShape[row][rightmostColIndex] === 1) {
+            const blockPosRow = rowToCheck + row;
+            const blockPosCol = colToCheck + rightmostColIndex;
+
+            if ((blockPosCol + 1) >= GRID_COLS) { // Means that we're at the rightmost column
+                return true;
+            }
+            else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === true) { // Means that there is an occupied block to the left
+                return true
+            }
         }
     }
-    return true
+    return false
 }
