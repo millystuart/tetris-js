@@ -2,7 +2,6 @@ import {drawBlock} from "./tetrimino.js";
 const WHITE = "#FFFFFF";
 export const GRID_ROWS = 20;
 export const GRID_COLS = 10;
-global.gridBlocks = []; // GLOBAL array to hold each block on the grid
 
 // For number of rows and columns specified, appends that many blocks to the grid element
 // This function returns the 2D array of blocks that make up the grid for use in other modules
