@@ -22,16 +22,14 @@ function gameLoop() {
     // Render all placed blocks onto the grid
     renderGrid();
 
-    if (checkVerticalCollision(activeTetrimino[0], currentRow, currentCol) === true) {
+    if (checkVerticalCollision(activeTetrimino[0], currentRow, currentCol)) {
         // If there is a vertical collision, the piece must be placed
-        const toBePlaced = true;
-        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, toBePlaced)
+        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, true)
         // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
         generateNewActiveTetrimino();
     }
     else {
-        const notPlaced = false;
-        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, notPlaced)
+        drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false)
         currentRow++;
     }
 }
@@ -45,10 +43,23 @@ function generateNewActiveTetrimino() {
 function handleKeyInput(event) {
     switch (event.key) {
         case "ArrowLeft":
-            currentCol--; // Decrement column to reflect shape moving left by one block
+            // if there is no left collision, render the block in the new position!
+            if (checkLeftCollision(activeTetrimino[0], currentRow, currentCol) === false) {
+                currentCol--; // Decrement column to reflect shape moving left by one block
+                clearGrid();
+                renderGrid();
+                drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+            }
             break;
+
         case "ArrowRight":
-            currentCol++; // Increment column to reflect shape moving right by one block
+            // if there is no right collision, render the block in the new position!
+            if (checkRightCollision(activeTetrimino[0], currentRow, currentCol) === false) {
+                currentCol++; // Increment column to reflect shape moving right by one block
+                clearGrid();
+                renderGrid();
+                drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+            }
             break;
     }
 }
