@@ -132,6 +132,18 @@ const TETRIMINOS = {
     },
 }
 
+// Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
+// This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
+export function generateRandomTetrimino() {
+    const tetriminoKeys = Object.keys(TETRIMINOS);
+    const randomTetrimino = TETRIMINOS[tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]]; // Randomly select one of the seven tetrimino keys    
+    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
+    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
+    const tetriminoColour = randomTetrimino.colour;
+
+    return [selectedTetriminoShape, tetriminoColour];
+}
+
 export function drawBlock(block) {
     block.blockElement.style.backgroundColor = block.colour;
 }
@@ -160,18 +172,6 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
             }
         }
     }
-}
-
-// Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
-// This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
-export function generateRandomTetrimino() {
-    const tetriminoKeys = Object.keys(TETRIMINOS);
-    const randomTetrimino = TETRIMINOS[tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]]; // Randomly select one of the seven tetrimino keys    
-    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
-    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
-    const tetriminoColour = randomTetrimino.colour;
-
-    return [selectedTetriminoShape, tetriminoColour];
 }
 
 function checkVerticalCollision(blockPosRow, blockPosCol) {
