@@ -136,18 +136,14 @@ export function drawBlock(block) {
     block.blockElement.style.backgroundColor = block.colour;
 }
 
-function isValidBlockToOccupy(gridBlock, row, col) {
-    if ((row >= 0 && row < GRID_ROWS) && (col >= 0 && col < GRID_COLS)) { // check if the block is within the grid boundaries
-        if (!gridBlock.occupied) { // check if the block is already occupied
-            return true;
-        }
-    }
-    return false;
+// Returns a tuple that can be used to determine where (if any) collisions are occurring
+function isValidBlockToOccupy(row, col) {
+    return (checkVerticalCollision(row, col) && checkHorizontalLeftCollision(row, col) && checkHorizontalRightCollision(row, col));
 }
 
 // Function to draw a tetrimino on the grid at a given position/rotation
 // drawTetrimino needs to return an updated gridBlocks array with the state of the board now that the tetrimino has been drawn
-export function drawTetrimino(tetriminoShape, colour, posRow, posCol) {
+export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
             if (tetriminoShape[row][col] === 1) {
