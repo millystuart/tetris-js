@@ -178,14 +178,14 @@ export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
 
             // If there is a vertical collision, the block must be placed.
             if ((blockPosRow + 1) >= GRID_ROWS) { // Means that we're at the bottom of the grid
-                return true
+                return true;
             }
             else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Means that there is an occupied block below
-                return true
+                return true;
             }
         }
     }
-    return false
+    return false;
 }
 
 // for this function, we only need to check the leftmost column of the shape
@@ -199,11 +199,12 @@ export function checkLeftCollision(tetriminoShape, rowToCheck, colToCheck) {
                 return true;
             }
             else if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === true) { // Means that there is an occupied block to the left
-                return true
+                return true;
             }
         }
     }
-    return false
+    // Check for vertical collision to ensure that the piece won't interfere with a neighbouring piece
+    return checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck);
 }
 
 export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
@@ -217,9 +218,9 @@ export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
                 return true;
             }
             else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === true) { // Means that there is an occupied block to the left
-                return true
+                return true;
             }
         }
     }
-    return false
+    return checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck);
 }
