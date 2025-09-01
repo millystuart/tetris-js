@@ -21,10 +21,8 @@ function descendTetrimino(tetrimino) {
     clearGrid(gridBlocks);
     drawTetrimino(tetrimino[0], tetrimino[1], startRow, startCol, gridBlocks);
     startRow++;
-    console.log(startRow);
 
     if (startRow > GRID_ROWS - tetrimino[0].length) {
         startRow = 0; // Reset tetrimino to the top
-        console.log(gridBlocks)
     }
 }
