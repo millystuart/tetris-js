@@ -136,9 +136,11 @@ export function drawBlock(block) {
     block.blockElement.style.backgroundColor = block.colour;
 }
 
-// Returns a tuple that can be used to determine where (if any) collisions are occurring
 function isValidBlockToOccupy(row, col) {
-    return (checkVerticalCollision(row, col) && checkHorizontalLeftCollision(row, col) && checkHorizontalRightCollision(row, col));
+    if (checkVerticalCollision(row, col) && checkHorizontalLeftCollision(row, col) && checkHorizontalRightCollision(row, col)) {
+        return true;
+    }
+    return false;
 }
 
 // Function to draw a tetrimino on the grid at a given position/rotation
