@@ -200,5 +200,10 @@ function checkHorizontalLeftCollision(blockPosRow, blockPosCol) {
 }
 
 function checkHorizontalRightCollision(blockPosRow, blockPosCol) {
-    
+    if ((blockPosCol + 1) < GRID_COLS) { // Means that we're NOT at the rightmost column
+        if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === false) { // Means that there is NOT an occupied block to the right
+            return false
+        }
+    }
+    return true
 }
