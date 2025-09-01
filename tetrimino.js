@@ -150,11 +150,13 @@ export function drawActiveTetrimino(tetriminoShape, colour, posRow, posCol) {
                 blockToDraw.colour = colour
                 
                 // Check if the calculated position is already occupied
-                if (isValidBlockToOccupy(blockToDraw, blockPosRow, blockPosCol)) {
-                    blockToDraw.occupied = true; // Mark the block as occupied
+                // NOTE: you are currently only checking for a vertical collision
+                if (checkVerticalCollision === false) {
                     drawBlock(blockToDraw); // Draw the block on the grid
                 }
-                // TODO: Handle case where part of tetrimino is out of bounds (e.g., at top or sides of grid)
+                else {
+                    commitTetrimino(tetriminoShape, colour, posRow, posCol);
+                }
             }
         }
     }
