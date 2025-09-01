@@ -13,7 +13,7 @@ export function initialiseGrid(rows, cols, grid) {
             let blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
-            let block = {blockElement: blockElement, occupied: false};
+            let block = {blockElement: blockElement, occupied: false, colour: WHITE}; // Default block config
             rowBlocks.push(block);
         }
         gridBlocks.push(rowBlocks);
@@ -30,4 +30,15 @@ export function clearGrid(gridBlocks) {
             drawBlock(blockObject.blockElement, WHITE);
         }
     }    
+}
+
+export function renderGrid() { // uses the gridBlocks array to render the grid in its latest state
+    for (let row = 0; row < gridBlocks.length; row++) {
+        for (let col = 0; (col < gridBlocks[row]).length; col++) {
+            block = gridBlocks[row][col]
+            if (block.occupied === true) {
+                drawBlock(block.blockElement)
+            }
+        }
+    }
 }
