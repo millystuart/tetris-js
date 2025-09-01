@@ -39,11 +39,12 @@ function generateNewActiveTetrimino() {
 }
 
 function handleKeyInput(event) {
-    switch(event.key) {
+    switch (event.key) {
         case "ArrowLeft":
             currentCol--; // Decrement column to reflect shape moving left by one block
+            break;
         case "ArrowRight":
             currentCol++; // Increment column to reflect shape moving right by one block
-        case "ArrowUp":
+            break;
     }
 }
