@@ -181,8 +181,8 @@ export function generateRandomTetrimino() {
 
 function checkVerticalCollision(blockPosRow, blockPosCol) {
     // If there is a vertical collision, the block must be placed.
-    if ((blockPosRow + 1) < GRID_ROWS) { // Means that we're at the bottom of the grid yet
-        if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === false) { // Means that there is an occupied block below
+    if ((blockPosRow + 1) < GRID_ROWS) { // Means that we're NOT at the bottom of the grid yet
+        if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === false) { // Means that there is NOT an occupied block below
             return false
         }
     }
@@ -191,7 +191,12 @@ function checkVerticalCollision(blockPosRow, blockPosCol) {
 
 // The horizontal collisions mean that the block is not allowed to move the corresponding direction (since there is something already there)
 function checkHorizontalLeftCollision(blockPosRow, blockPosCol) {
-
+    if ((blockPosCol - 1) > 0) { // Means that we're NOT at the leftmost column
+        if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === false) { // Means that there is NOT an occupied block to the left
+            return false
+        }
+    }
+    return true
 }
 
 function checkHorizontalRightCollision(blockPosRow, blockPosCol) {
