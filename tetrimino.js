@@ -147,7 +147,7 @@ function isValidBlockToOccupy(gridBlock, row, col) {
 
 // Function to draw a tetrimino on the grid at a given position/rotation
 // drawTetrimino needs to return an updated gridBlocks array with the state of the board now that the tetrimino has been drawn
-export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks) {
+export function drawTetrimino(tetriminoShape, colour, posRow, posCol) {
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
             if (tetriminoShape[row][col] === 1) {
@@ -165,7 +165,6 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol, gridBlocks
             }
         }
     }
-    return gridBlocks; // return the state of gridBlocks after drawing the tetrimino
 }
 
 // Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
