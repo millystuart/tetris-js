@@ -11,6 +11,9 @@ let activeTetrimino = null;
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
 generateNewActiveTetrimino();
 
+// add keyboard event listener to detect arrow key inputs
+document.addEventListener("keydown", handleKeyInput);
+
 setInterval(gameLoop, 500);
 
 function gameLoop() {
@@ -18,7 +21,7 @@ function gameLoop() {
     clearGrid();
     // Render all placed blocks onto the grid
     renderGrid();
-
+    
     if (drawActiveTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol)) {
         // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
         generateNewActiveTetrimino();
@@ -33,4 +36,14 @@ function generateNewActiveTetrimino() {
     activeTetrimino = generateRandomTetrimino();
     currentRow = 0;
     currentCol = 3;
+}
+
+function handleKeyInput(event) {
+    switch(event.key) {
+        case "ArrowLeft":
+
+        case "ArrowRight":
+
+        case "ArrowUp":
+    }
 }
