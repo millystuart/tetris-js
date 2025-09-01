@@ -183,12 +183,14 @@ function placeTetrimino(tetriminoShape, colour, posRow, posCol) {
     console.log("I am being called")
     for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
         for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
-            const blockPosRow = posRow + row;
-            const blockPosCol = posCol + col;
-            const blockToPlace = gridBlocks[blockPosRow][blockPosCol];
-            blockToPlace.colour = colour;
-            blockToPlace.occupied = true;
-            drawBlock(blockToPlace);
+            if (tetriminoShape[row][col] === 1) {
+                const blockPosRow = posRow + row;
+                const blockPosCol = posCol + col;
+                const blockToPlace = gridBlocks[blockPosRow][blockPosCol];
+                blockToPlace.colour = colour;
+                blockToPlace.occupied = true;
+                drawBlock(blockToPlace);
+            }
         }
 
     }
