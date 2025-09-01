@@ -3,28 +3,34 @@ import {drawActiveTetrimino, generateRandomTetrimino} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
 globalThis.gridBlocks = []; // GLOBAL array to hold each block on the grid
-let startRow = 0;
-let startCol = 3;
+let currentRow = 0;
+let currentCol = 3;
+let activeTetrimino = null;
 
 // gridBlocks will hold the state of the grid
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
-let tetrimino = generateRandomTetrimino();
+generateNewActiveTetrimino();
 
 setInterval(gameLoop, 500);
 
 function gameLoop() {
-    descendTetrimino(tetrimino)
-}
-
-function descendTetrimino(tetrimino) {
     // Start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
-    clearGrid(gridBlocks);
+    clearGrid();
     // Render all placed blocks onto the grid
     renderGrid();
-    drawActiveTetrimino(tetrimino[0], tetrimino[1], startRow, startCol);
-    startRow++;
 
-    if (startRow > GRID_ROWS - tetrimino[0].length) {
-        startRow = 0; // Reset tetrimino to the top
+    if (drawActiveTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol)) {
+        // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
+        generateNewActiveTetrimino();
     }
+    else {
+        // If false, continue dropping the active tetrimino.
+        currentRow++;
+    }
+}
+
+function generateNewActiveTetrimino() {
+    activeTetrimino = generateRandomTetrimino();
+    currentRow = 0;
+    currentCol = 3;
 }
