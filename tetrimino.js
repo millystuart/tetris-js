@@ -255,7 +255,7 @@ export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
 // Fetches the next rotation key- remember that this is a value between 0 and 3.
 export function fetchNextRotation(tetriminoKey, currentRotation) {
     // Retrieve the tetrimino object based on the passed key so that its four rotation states can be fetched.
-    let tetrimino = TETRIMINOS[tetriminoKey];
+    const tetriminoObject = TETRIMINOS[tetriminoKey];
 
     if (currentRotation === 3) {
         // Reset back to 0 if the tetrimino is at the final rotation index (full circle).
