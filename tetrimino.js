@@ -196,10 +196,10 @@ export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
                 const blockPosCol = colToCheck + col;
 
                 // If a vertical collision is detected, the block must be placed.
-                if ((blockPosRow + 1) >= GRID_ROWS) { // Meaning that piece is at the bottom of the grid
+                if ((blockPosRow + 1) >= GRID_ROWS) { // Meaning that piece is at the bottom of the grid.
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Meaning that there is an occupied block below.
+                if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied) { // Meaning that there is an occupied block below.
                     return true;
                 }
             }
@@ -220,7 +220,7 @@ export function checkLeftCollision(tetriminoShape, rowToCheck, colToCheck) {
                 if ((blockPosCol - 1) < 0) { // Meaning that we're at the leftmost column.
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === true) { // Meaning that there is an occupied block to the left.
+                if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied) { // Meaning that there is an occupied block to the left.
                     return true;
                 }
             }
@@ -242,7 +242,7 @@ export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
                 if ((blockPosCol + 1) >= GRID_COLS) { // Meaning that we're at the rightmost column.
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === true) { // Meaning that there is an occupied block to the right.
+                else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied) { // Meaning that there is an occupied block to the right.
                     return true;
                 }
             }
