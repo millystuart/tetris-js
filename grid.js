@@ -43,7 +43,7 @@ export function renderGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < (gridBlocks[row]).length; col++) {
             const blockToRender = gridBlocks[row][col].blockElement;
-            if (blockToRender.occupied === true) {
+            if (blockToRender.occupied) {
                 drawBlock(blockToRender);
             }
         }
