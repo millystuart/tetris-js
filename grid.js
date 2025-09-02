@@ -14,8 +14,11 @@ export function initialiseGrid(rows, cols, grid) {
             let blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
-            let block = {blockElement: blockElement, occupied: false, colour: WHITE};
-            rowBlocks.push(block);
+
+            // Create a block object that will hold necessary properties of each block.
+            const blockObject = {blockElement: blockElement, occupied: false, colour: WHITE};
+
+            rowBlocks.push(blockObject);
         }
         gridBlocks.push(rowBlocks);
     }
