@@ -157,8 +157,8 @@ export function generateRandomTetrimino() {
 }
 
 // Graphical function that changes the colour of a passed block element to its required colour.
-export function drawBlock(block) {
-    block.blockElement.style.backgroundColor = block.colour;
+export function drawBlock(blockObject) {
+    blockObject.blockElement.style.backgroundColor = blockObject.colour;
 }
 
 // Draws a tetrimino on the grid at a given position/rotation.
