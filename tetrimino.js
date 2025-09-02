@@ -1,6 +1,6 @@
 import {GRID_ROWS, GRID_COLS} from "./grid.js";
 
-// Hex colour values for each tetrimino
+// Hex colour constants for each tetrimino
 const TURQUOISE = "#c3eee8ff";
 const BLUE      = "#97d3fcff";
 const ORANGE    = "#f8d799ff";
@@ -9,9 +9,10 @@ const GREEN     = "#a5f595ff";
 const PURPLE    = "#e2bbfcff";
 const RED       = "#ffbebeff";
 
-const ROTATIONS = 4; // Each tetrimino will always four rotation states (0, 90, 180, 270 degrees)
+// Each tetrimino will always four rotation states (0, 90, 180, 270 degrees)
+const ROTATIONS = 4;
 
-// Below is an exported object containing each tetrimino's four rotation states and corresponding colour.
+// TETRIMINOS object contains each tetrimino's four rotation states and corresponding colour.
 // Each rotation state is represented by a 2D-array, where 1 indicates the presence of a block.
 const TETRIMINOS = {
     I: {
@@ -132,36 +133,52 @@ const TETRIMINOS = {
     },
 }
 
-// Function that will choose a random tetrimino of the seven available, and a given orientation between 0 and 3.
-// This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
+// Chooses a random tetrimino of the seven available, and a given orientation between 0 and 3.
+// This function returns an array containing the shape of the chosen tetrimino in its orientation (2D-array of 1s and 0s),
+// its corresponding colour (e.g. PURPLE), the key (e.g. "J") and the chosen rotation (0-3).
 export function generateRandomTetrimino() {
-    const tetriminoKeys = Object.keys(TETRIMINOS);
-    const chosenKeyIndex = Math.floor(Math.random() * tetriminoKeys.length);
-    const chosenKey = tetriminoKeys[chosenKeyIndex]; // just to fetch the string. This will be used to get other rotations for this shape later
-    const randomTetrimino = TETRIMINOS[chosenKey]; // Randomly select one of the seven tetrimino keys    
-    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
-    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
+    const tetriminoKeys = Object.keys(TETRIMINOS); // ["I", "J", "L" etc...]
+    const chosenKeyIndex = Math.floor(Math.random() * tetriminoKeys.length); // Number between 0-6.
+    
+    // Fetches the string key. This will be used to get other rotations for this shape later.
+    const chosenKey = tetriminoKeys[chosenKeyIndex];
+    
+    // Holds the chosen tetrimino OBJECT.
+    const randomTetrimino = TETRIMINOS[chosenKey];
+
+    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Number between 0 and 3.
+    
+    // Select the tetrimino's shape based on generated index
+    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation];
+
     const tetriminoColour = randomTetrimino.colour;
 
     return [selectedTetriminoShape, tetriminoColour, chosenKey, randomRotation];
 }
 
+// Graphical function that changes the colour of a passed block element to its required colour.
 export function drawBlock(block) {
     block.blockElement.style.backgroundColor = block.colour;
 }
 
-// Function to draw a tetrimino on the grid at a given position/rotation
-// drawTetrimino needs to return an updated gridBlocks array with the state of the board now that the tetrimino has been drawn
+// Draws a tetrimino on the grid at a given position/rotation.
+// Also takes a toBePlaced boolean to determine whether to set the occupied property to true or not.
 export function drawTetrimino(tetriminoShape, colour, posRow, posCol, toBePlaced) {
-    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
-        for (let col = 0; col < tetriminoShape[row].length; col++) { // For each column in that row
-            if (tetriminoShape[row][col] === 1) {
+    for (let row = 0; row < tetriminoShape.length; row++) {
+        for (let col = 0; col < tetriminoShape[row].length; col++) {
+            if (tetriminoShape[row][col] === 1) { // In other words, is there a block?
                 // Calculate the required row/column in the grid for the block to be drawn based on specified position on the grid
                 const blockPosRow = posRow + row;
                 const blockPosCol = posCol + col;
+
+                // Find the block object to be drawn in gridBlocks
                 const blockToDraw = gridBlocks[blockPosRow][blockPosCol];
+
+                // Reassign colour to the desired colour passed into drawTetrimino. 
                 blockToDraw.colour = colour
+
                 if (toBePlaced) {
+                    // Set occupied property to true since this tetrimino is being PLACED onto the grid.
                     blockToDraw.occupied = true;
                 }
                 drawBlock(blockToDraw);
@@ -170,19 +187,20 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol, toBePlaced
     }
 }
 
-// Note that we need to check all blocks for collision
+// For each block of the tetrimino, check that it doesn't exceed the vertical bounds of the grid or collide with another placed tetrimino.
 export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
     for (let row = 0; row < tetriminoShape.length; row++) {
         for (let col = 0; col < (tetriminoShape[row]).length; col++) {
             if (tetriminoShape[row][col] === 1) {
+                // Calculate the projected position of the block on the grid relative to the rowToCheck and colToCheck.
                 const blockPosRow = rowToCheck + row;
                 const blockPosCol = colToCheck + col;
 
-                // If there is a vertical collision, the block must be placed.
-                if ((blockPosRow + 1) >= GRID_ROWS) { // Means that we're at the bottom of the grid
+                // If a vertical collision is detected, the block must be placed.
+                if ((blockPosRow + 1) >= GRID_ROWS) { // Meaning that piece is at the bottom of the grid
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Means that there is an occupied block below
+                else if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied === true) { // Meaning that there is an occupied block below.
                     return true;
                 }
             }
@@ -191,49 +209,57 @@ export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
     return false;
 }
 
-// for this function, I thought I only needed to check the leftmost column of the shape, but it's actually the entire shape that needs to be checked
+// Upon a movement left, check if the piece is trying to move to an invalid position and colliding with something to the left.
 export function checkLeftCollision(tetriminoShape, rowToCheck, colToCheck) {
-    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+    for (let row = 0; row < tetriminoShape.length; row++) {
         for (let col = 0; col < tetriminoShape[row].length; col++) {
             if (tetriminoShape[row][col] === 1) {
+                // Calculate the projected position of the block on the grid relative to the rowToCheck and colToCheck.
                 const blockPosRow = rowToCheck + row;
                 const blockPosCol = colToCheck + col;
 
-                if ((blockPosCol - 1) < 0) { // Means that we're at the leftmost column
+                if ((blockPosCol - 1) < 0) { // Meaning that we're at the leftmost column.
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === true) { // Means that there is an occupied block to the left
+                else if ((gridBlocks[blockPosRow][blockPosCol - 1]).occupied === true) { // Meaning that there is an occupied block to the left.
                     return true;
                 }
             }
         }
     }
-    // Check for vertical collision to ensure that the piece won't interfere with a neighbouring piece
+    // Once it is known that there are no left collisions, check for any vertical collision to ensure that the piece won't interfere with anything below it.
     return checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck);
 }
 
+// Upon a movement right, check if the piece is trying to move to an invalid position and colliding with something to the right.
 export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
-    for (let row = 0; row < tetriminoShape.length; row++) { // For each row in the tetrimino's shape
+    for (let row = 0; row < tetriminoShape.length; row++) {
         for (let col = 0; col < tetriminoShape[row].length; col++) {        
             if (tetriminoShape[row][col] === 1) {
+                // Calculate the projected position of the block on the grid relative to the rowToCheck and colToCheck.
                 const blockPosRow = rowToCheck + row;
                 const blockPosCol = colToCheck + col;
 
-                if ((blockPosCol + 1) >= GRID_COLS) { // Means that we're at the rightmost column
+                if ((blockPosCol + 1) >= GRID_COLS) { // Meaning that we're at the rightmost column.
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === true) { // Means that there is an occupied block to the left
+                else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied === true) { // Meaning that there is an occupied block to the right.
                     return true;
                 }
             }
         }    
     }
+    // Once it is known that there are no right collisions, check for any vertical collision to ensure that the piece won't interfere with anything below it.
     return checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck);
 }
 
+// Fetches the next rotation key- remember that this is a value between 0 and 3.
 export function fetchNextRotation(tetriminoKey, currentRotation) {
+    // Retrieve the tetrimino object based on the passed key so that its four rotation states can be fetched.
     let tetrimino = TETRIMINOS[tetriminoKey];
+
     if (currentRotation === 3) {
+        // Reset back to 0 if the tetrimino is at the final rotation index (full circle).
         currentRotation = 0;
     }
     else {

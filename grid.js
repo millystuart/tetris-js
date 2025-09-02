@@ -3,25 +3,26 @@ const WHITE = "#FFFFFF";
 export const GRID_ROWS = 20;
 export const GRID_COLS = 10;
 
-// For number of rows and columns specified, appends that many blocks to the grid element
-// This function returns the 2D array of blocks that make up the grid for use in other modules
+// For number of rows and columns specified, append that many blocks to the grid element.
+// This is done by pushing rows of blocks to a 2D array that make up the grid.
+// These blocks are used to capture the state of the grid at any given time.
 export function initialiseGrid(rows, cols, grid) {
     for (let row = 0; row < rows; row++) {
-        let rowBlocks = []; // Array to hold each block in the current row
+        let rowBlocks = []; // Array to temporarily hold each block in the current row.
 
         for (let col = 0; col < cols; col++) {
             let blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
-            let block = {blockElement: blockElement, occupied: false, colour: WHITE}; // Default block config
+            let block = {blockElement: blockElement, occupied: false, colour: WHITE};
             rowBlocks.push(block);
         }
         gridBlocks.push(rowBlocks);
     }
 }
 
-// This functions takes our 2D-array of blocks and resets them all to the default colour (white) if they are not occupied.
-// Note that clearGrid does not "clear" the grid by removing blocks, it simply resets their colour and sets their occupied value to false
+// Resets all blocks to their default colour (white) if they are not occupied.
+// Note that the clearGrid function does not "clear" the grid by removing blocks, it simply resets their colour and sets their occupied value to false.
 export function clearGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < gridBlocks[row].length; col++) {
@@ -34,7 +35,8 @@ export function clearGrid() {
     }    
 }
 
-export function renderGrid() { // uses the gridBlocks array to render the grid in its latest state
+// Using the gridBlocks array, renderGrid draws any occupied blocks to the grid to update it to the latest state.
+export function renderGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < (gridBlocks[row]).length; col++) {
             let blockToRender = gridBlocks[row][col].blockElement;

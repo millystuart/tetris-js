@@ -2,74 +2,97 @@ import {GRID_ROWS, GRID_COLS, initialiseGrid, clearGrid, renderGrid} from "./gri
 import {drawTetrimino, generateRandomTetrimino, checkLeftCollision, checkRightCollision, checkVerticalCollision, fetchNextRotation} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
-globalThis.gridBlocks = []; // GLOBAL array to hold each block on the grid
+
+// Interval by which the game state will update and hence the tetrimino will descend
+const INTERVAL = 500; // (in ms)
+
+// GLOBAL array holding each row of blocks on the grid at any given time.
+globalThis.gridBlocks = [];
+
+// All tetriminos spawn at position (0, 3) on the grid.
 let currentRow = 0;
 let currentCol = 3;
-let activeTetrimino = null;
 
-// gridBlocks will hold the state of the grid
+// activeTetrimino = [tetriminoShape, tetriminoColour, tetriminoIndex, tetriminoRotationIndex]
+// tetriminoShape = [[1...0], etc.], tetriminoColour = (e.g.) RED, tetriminoIndex = (e.g.) "S" and tetriminoRotationIndex = 0-3
+let activeTetrimino = [];
+
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
+
+// Randomly fetches a tetrimino and sets its current row/column to the default start position.
 generateNewActiveTetrimino();
 
-// add keyboard event listener to detect arrow key inputs
+// Add a keyboard event listener to detect key inputs.
 document.addEventListener("keydown", handleKeyInput);
 
-setInterval(gameLoop, 500);
+// gameLoop is run every time the interval period is elapsed.
+setInterval(gameLoop, INTERVAL);
 
 function gameLoop() {
     // Start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
     clearGrid();
-    // Render all placed blocks onto the grid
+    // Render all currently placed blocks onto the grid
     renderGrid();
 
+    // Collision checks:
     if (checkVerticalCollision(activeTetrimino[0], currentRow, currentCol)) {
         // If there is a vertical collision, the piece must be placed
         drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, true)
-        // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
+        // Once the current active tetrimino has been placed, a new tetrimino can be generated at the top of the screen.
         generateNewActiveTetrimino();
     }
     else {
+        // Otherwise, render the current tetrimino on the screen since it hasn't collided with anything and is hence still descending.
         drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false)
+        // Descend the current tetrimino by one row to reflect the passing of time.
         currentRow++;
     }
 }
 
+// Randomly generates a new active tetrimino, and resets the global variables to reflect a new tetrimino spawning at the top. 
 function generateNewActiveTetrimino() {
     activeTetrimino = generateRandomTetrimino();
     currentRow = 0;
     currentCol = 3;
 }
 
+// Holds the code that will run upon a given event encounter.
+// Currently, there are three options- either left, right or up arrow.
 function handleKeyInput(event) {
     switch (event.key) {
+        // ArrowLeft moves the tetrimino one block (column) to the left.
         case "ArrowLeft":
-            // if there is no left collision, render the block in the new position!
             if (checkLeftCollision(activeTetrimino[0], currentRow, currentCol) === false) {
-                currentCol--; // Decrement column to reflect shape moving left by one block
+                // Decrement column to reflect shape moving left by one block.
+                currentCol--;
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
 
+        // ArrowRight moves the tetrimino one block (column) to the right.
         case "ArrowRight":
-            // if there is no right collision, render the block in the new position!
             if (checkRightCollision(activeTetrimino[0], currentRow, currentCol) === false) {
-                currentCol++; // Increment column to reflect shape moving right by one block
+                // Increment column to reflect shape moving right by one block.
+                currentCol++;
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
         
+        // ArrowUp denotes that the user would like to rotate their current piece. Rotation occurs clockwise.
         case "ArrowUp":
-            let proposedTetriminoRotation = fetchNextRotation(activeTetrimino[2], activeTetrimino[3]); // Passing in the string representing the type of tetrimino in play (e.g. "J")
-            // Check collisions to ensure that rotating won't move the piece to an invalid position
-            // No need to check vertical collisions as those are checked by the left/right collision functions
+            // Passing in the string representing the type of tetrimino in play (e.g. "J") and the current rotation index (0-3)
+            let proposedTetriminoRotation = fetchNextRotation(activeTetrimino[2], activeTetrimino[3]);
+
+            // Check collisions to ensure that rotating the tetrimino won't move the piece to an invalid position.
+            // Note that there is no need to check vertical collisions as they are checked by the left/right collision functions internally.
             if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol) &&
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
-                activeTetrimino[0] = proposedTetriminoRotation; // Update the shape to the new proposed shape
+                // Actually update the shape to the new orientation.
+                activeTetrimino[0] = proposedTetriminoRotation;
 
                 // If rotation index 3, then reset to 0 again since there are four rotations.
                 // Otherwise, increment the rotation index to reflect the new tetrimino orientation.
                 activeTetrimino[3] === 3 ? activeTetrimino[3] = 0 : activeTetrimino[3]++;
-                // Display changes
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
