@@ -8,10 +8,10 @@ export const GRID_COLS = 10;
 // These blocks are used to capture the state of the grid at any given time.
 export function initialiseGrid(rows, cols, grid) {
     for (let row = 0; row < rows; row++) {
-        let rowBlocks = []; // Array to temporarily hold each block in the current row.
+        const rowBlocks = []; // Array to temporarily hold each block in the current row.
 
         for (let col = 0; col < cols; col++) {
-            let blockElement = document.createElement("div");
+            const blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
 
@@ -29,7 +29,7 @@ export function initialiseGrid(rows, cols, grid) {
 export function clearGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < gridBlocks[row].length; col++) {
-            let blockObject = gridBlocks[row][col];
+            const blockObject = gridBlocks[row][col];
             if (blockObject.occupied === false) {
                 blockObject.colour = WHITE;
                 drawBlock(blockObject);
@@ -42,7 +42,7 @@ export function clearGrid() {
 export function renderGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < (gridBlocks[row]).length; col++) {
-            let blockToRender = gridBlocks[row][col].blockElement;
+            const blockToRender = gridBlocks[row][col].blockElement;
             if (blockToRender.occupied === true) {
                 drawBlock(blockToRender);
             }
