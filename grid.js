@@ -30,7 +30,7 @@ export function clearGrid() {
     for (let gridRow = 0; gridRow < gridBlocks.length; gridRow++) {
         for (let gridCol = 0; gridCol < gridBlocks[gridRow].length; gridCol++) {
             const blockObject = gridBlocks[gridRow][gridCol];
-            if (blockObject.occupied === false) {
+            if (!blockObject.occupied) {
                 blockObject.colour = WHITE;
                 drawBlock(blockObject);
             }            
