@@ -15,7 +15,7 @@ let currentCol = 3;
 
 // activeTetrimino = [tetriminoShape, tetriminoColour, tetriminoIndex, tetriminoRotationIndex]
 // tetriminoShape = [[1...0], etc.], tetriminoColour = (e.g.) RED, tetriminoIndex = (e.g.) "S" and tetriminoRotationIndex = 0-3
-let activeTetrimino = [];
+const activeTetrimino = [];
 
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
 
@@ -62,7 +62,7 @@ function handleKeyInput(event) {
     switch (event.key) {
         // ArrowLeft moves the tetrimino one block (column) to the left.
         case "ArrowLeft":
-            if (checkLeftCollision(activeTetrimino[0], currentRow, currentCol) === false) {
+            if (!checkLeftCollision(activeTetrimino[0], currentRow, currentCol)) {
                 // Decrement column to reflect shape moving left by one block.
                 currentCol--;
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
@@ -71,7 +71,7 @@ function handleKeyInput(event) {
 
         // ArrowRight moves the tetrimino one block (column) to the right.
         case "ArrowRight":
-            if (checkRightCollision(activeTetrimino[0], currentRow, currentCol) === false) {
+            if (!checkRightCollision(activeTetrimino[0], currentRow, currentCol)) {
                 // Increment column to reflect shape moving right by one block.
                 currentCol++;
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
@@ -81,12 +81,13 @@ function handleKeyInput(event) {
         // ArrowUp denotes that the user would like to rotate their current piece. Rotation occurs clockwise.
         case "ArrowUp":
             // Passing in the string representing the type of tetrimino in play (e.g. "J") and the current rotation index (0-3)
-            let proposedTetriminoRotation = fetchNextRotation(activeTetrimino[2], activeTetrimino[3]);
+            const proposedTetriminoRotation = fetchNextRotation(activeTetrimino[2], activeTetrimino[3]);
 
             // Check collisions to ensure that rotating the tetrimino won't move the piece to an invalid position.
             // Note that there is no need to check vertical collisions as they are checked by the left/right collision functions internally.
             if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol) &&
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
+                    
                 // Actually update the shape to the new orientation.
                 activeTetrimino[0] = proposedTetriminoRotation;
 
