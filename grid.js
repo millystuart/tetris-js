@@ -13,21 +13,34 @@ export function initialiseGrid(rows, cols, grid) {
             let blockElement = document.createElement("div");
             blockElement.classList.add("block");
             grid.appendChild(blockElement);
-            let block = {blockElement: blockElement, occupied: false};
+            let block = {blockElement: blockElement, occupied: false, colour: WHITE}; // Default block config
             rowBlocks.push(block);
         }
         gridBlocks.push(rowBlocks);
     }
 }
 
-// This functions takes our 2D-array of blocks and resets them all to the default colour (white).
+// This functions takes our 2D-array of blocks and resets them all to the default colour (white) if they are not occupied.
 // Note that clearGrid does not "clear" the grid by removing blocks, it simply resets their colour and sets their occupied value to false
-export function clearGrid(gridBlocks) {
+export function clearGrid() {
     for (let row = 0; row < gridBlocks.length; row++) {
         for (let col = 0; col < gridBlocks[row].length; col++) {
             let blockObject = gridBlocks[row][col];
-            blockObject.occupied = false;
-            drawBlock(blockObject.blockElement, WHITE);
+            if (blockObject.occupied === false) {
+                blockObject.colour = WHITE;
+                drawBlock(blockObject);
+            }            
         }
     }    
+}
+
+export function renderGrid() { // uses the gridBlocks array to render the grid in its latest state
+    for (let row = 0; row < gridBlocks.length; row++) {
+        for (let col = 0; col < (gridBlocks[row]).length; col++) {
+            let blockToRender = gridBlocks[row][col].blockElement;
+            if (blockToRender.occupied === true) {
+                drawBlock(blockToRender);
+            }
+        }
+    }
 }

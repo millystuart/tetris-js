@@ -1,30 +1,36 @@
-import {initialiseGrid, clearGrid, GRID_COLS, GRID_ROWS} from "./grid.js";
-import {drawTetrimino, generateRandomTetrimino} from "./tetrimino.js";
+import {initialiseGrid, clearGrid, GRID_COLS, GRID_ROWS, renderGrid} from "./grid.js";
+import {drawActiveTetrimino, generateRandomTetrimino} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
 globalThis.gridBlocks = []; // GLOBAL array to hold each block on the grid
-let startRow = 0;
-let startCol = 3;
+let currentRow = 0;
+let currentCol = 3;
+let activeTetrimino = null;
 
 // gridBlocks will hold the state of the grid
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
-let tetrimino = generateRandomTetrimino();
+generateNewActiveTetrimino();
 
 setInterval(gameLoop, 500);
 
 function gameLoop() {
-    descendTetrimino(tetrimino)
+    // Start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
+    clearGrid();
+    // Render all placed blocks onto the grid
+    renderGrid();
+
+    if (drawActiveTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol)) {
+        // Once current active tetrimino has been placed, we can now proceed to generate a new tetrimino at the top of the screen
+        generateNewActiveTetrimino();
+    }
+    else {
+        // If false, continue dropping the active tetrimino.
+        currentRow++;
+    }
 }
 
-function descendTetrimino(tetrimino) {
-    // Start by clearing grid so that the tetrimino can be drawn in its new position without leaving a trail.
-    clearGrid(gridBlocks);
-    drawTetrimino(tetrimino[0], tetrimino[1], startRow, startCol, gridBlocks);
-    startRow++;
-    console.log(startRow);
-
-    if (startRow > GRID_ROWS - tetrimino[0].length) {
-        startRow = 0; // Reset tetrimino to the top
-        console.log(gridBlocks)
-    }
+function generateNewActiveTetrimino() {
+    activeTetrimino = generateRandomTetrimino();
+    currentRow = 0;
+    currentCol = 3;
 }
