@@ -87,22 +87,58 @@ function handleKeyInput(event) {
             // Note that there is no need to check vertical collisions as they are checked by the left/right collision functions internally.
             if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol) &&
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
-
-                // Actually update the shape to the new orientation.
-                activeTetrimino[0] = proposedTetriminoRotation;
-
-                // If rotation index 3, then reset to 0 again since there are four rotations.
-                // Otherwise, increment the rotation index to reflect the new tetrimino orientation.
-                activeTetrimino[3] === 3 ? activeTetrimino[3] = 0 : activeTetrimino[3]++;
-                refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+                // If there are no collisions detected, perform the rotation.
+                performRotation(proposedTetriminoRotation);
+                break;
             }
-            break;
-    }
 
-    // Helper function that runs the necessary functions to refresh the frame when an event occurs.
-    function refreshFrame(tetriminoShape, tetriminoColour, row, column, toBePlaced) {
-        clearGrid();
-        renderGrid();
-        drawTetrimino(tetriminoShape, tetriminoColour, row, column, toBePlaced);
+            // If collisions have been detected, check to see if there is a left collision.
+            // If so, try shifting the piece one column right and check again for collisions.
+            else if (checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol)) {
+                // If there are no collisions, perform the rotation with the tetrimino shifted once to the right.
+                if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol + 1) &&
+                    !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol + 1)) {
+                    currentCol++;
+                    performRotation(proposedTetriminoRotation);
+                    break;
+                }
+            }
+            
+            // If no left collision detected, check to see if there is a right collision.
+            // Right collision is more complicated since a rotated piece at the wall may need to be shifted by the length of the proposed rotation.
+            else if (checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
+                // If there are no collisions, perform the rotation with the tetrimino shifted to the right by number of columns in proposed shape.
+                const shiftAmount = proposedTetriminoRotation[0].length - 1;
+                if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol - shiftAmount) &&
+                    !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol - shiftAmount)) {
+                    currentCol -= shiftAmount;
+                    performRotation(proposedTetriminoRotation);
+                    break;
+                }
+            }
+
+            // Otherwise, just break without attempting to rotate the piece since it is not possible.
+            else {
+                break;
+            }
     }
+}
+
+// Helper function that runs the necessary functions to refresh the frame when an event occurs.
+function refreshFrame(tetriminoShape, tetriminoColour, row, column, toBePlaced) {
+    clearGrid();
+    renderGrid();
+    drawTetrimino(tetriminoShape, tetriminoColour, row, column, toBePlaced);
+}
+
+// Helper function to run the functions needed to perform a rotation on a piece.
+function performRotation(tetriminoRotation) {
+    // Actually update the shape to the new orientation.
+    activeTetrimino[0] = tetriminoRotation;
+
+    // If rotation index 3, then reset to 0 again since there are four rotations.
+    // Otherwise, increment the rotation index to reflect the new tetrimino orientation.
+    activeTetrimino[3] === 3 ? activeTetrimino[3] = 0 : activeTetrimino[3]++;
+
+    refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
 }
