@@ -143,7 +143,7 @@ export function generateRandomTetrimino() {
     const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
     const tetriminoColour = randomTetrimino.colour;
 
-    return [selectedTetriminoShape, tetriminoColour, chosenKey];
+    return [selectedTetriminoShape, tetriminoColour, chosenKey, randomRotation];
 }
 
 export function drawBlock(block) {
@@ -229,4 +229,15 @@ export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
         }    
     }
     return checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck);
+}
+
+export function fetchNextRotation(tetriminoKey, currentRotation) {
+    let tetrimino = TETRIMINOS[tetriminoKey];
+    if (currentRotation === 3) {
+        currentRotation = 0;
+    }
+    else {
+        currentRotation++;
+    }
+    return (tetrimino.rotations[currentRotation]);
 }
