@@ -136,12 +136,14 @@ const TETRIMINOS = {
 // This function returns a random 2D-array of a random tetrimino shape in one of its four orientations.
 export function generateRandomTetrimino() {
     const tetriminoKeys = Object.keys(TETRIMINOS);
-    const randomTetrimino = TETRIMINOS[tetriminoKeys[Math.floor(Math.random() * tetriminoKeys.length)]]; // Randomly select one of the seven tetrimino keys    
+    const chosenKeyIndex = Math.floor(Math.random() * tetriminoKeys.length);
+    const chosenKey = tetriminoKeys[chosenKeyIndex]; // just to fetch the string. This will be used to get other rotations for this shape later
+    const randomTetrimino = TETRIMINOS[chosenKey]; // Randomly select one of the seven tetrimino keys    
     const randomRotation = Math.floor(Math.random() * ROTATIONS); // Generate random number between 0 and 3
     const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation]; // Select the tetrimino's shape based on generated index
     const tetriminoColour = randomTetrimino.colour;
 
-    return [selectedTetriminoShape, tetriminoColour];
+    return [selectedTetriminoShape, tetriminoColour, chosenKey];
 }
 
 export function drawBlock(block) {
