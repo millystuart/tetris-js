@@ -65,7 +65,11 @@ function handleKeyInput(event) {
             if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol) &&
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
                 activeTetrimino[0] = proposedTetriminoRotation; // Update the shape to the new proposed shape
-                activeTetrimino[3]++; // increment the rotation index to reflect the new tetrimino orientation
+
+                // If rotation index 3, then reset to 0 again since there are four rotations.
+                // Otherwise, increment the rotation index to reflect the new tetrimino orientation.
+                activeTetrimino[3] === 3 ? activeTetrimino[3] = 0 : activeTetrimino[3]++;
+                // Display changes
                 refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
