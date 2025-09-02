@@ -1,6 +1,6 @@
 import {GRID_ROWS, GRID_COLS} from "./grid.js";
 
-// Hex colour constants for each tetrimino
+// Hex colour constants for each tetrimino.
 const TURQUOISE = "#c3eee8ff";
 const BLUE      = "#97d3fcff";
 const ORANGE    = "#f8d799ff";
@@ -144,16 +144,16 @@ export function generateRandomTetrimino() {
     const chosenKey = tetriminoKeys[chosenKeyIndex];
     
     // Holds the chosen tetrimino OBJECT.
-    const randomTetrimino = TETRIMINOS[chosenKey];
+    const chosenTetrimino = TETRIMINOS[chosenKey];
 
-    const randomRotation = Math.floor(Math.random() * ROTATIONS); // Number between 0 and 3.
+    const chosenRotation = Math.floor(Math.random() * ROTATIONS); // Number between 0 and 3.
     
     // Select the tetrimino's shape based on generated index
-    const selectedTetriminoShape = (randomTetrimino.rotations)[randomRotation];
+    const chosenTetriminoShape = (chosenTetrimino.rotations)[chosenRotation];
 
-    const tetriminoColour = randomTetrimino.colour;
+    const tetriminoColour = chosenTetrimino.colour;
 
-    return [selectedTetriminoShape, tetriminoColour, chosenKey, randomRotation];
+    return [chosenTetriminoShape, tetriminoColour, chosenKey, chosenRotation];
 }
 
 // Graphical function that changes the colour of a passed block element to its required colour.
