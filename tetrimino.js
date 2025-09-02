@@ -174,13 +174,12 @@ export function drawTetrimino(tetriminoShape, colour, posRow, posCol, toBePlaced
                 // Find the block object to be drawn in gridBlocks
                 const blockToDraw = gridBlocks[blockPosRow][blockPosCol];
 
-                // Reassign colour to the desired colour passed into drawTetrimino. 
-                blockToDraw.colour = colour
+                // Reassign colour to the desired colour passed into drawTetrimino.
+                blockToDraw.colour = colour;
 
-                if (toBePlaced) {
-                    // Set occupied property to true since this tetrimino is being PLACED onto the grid.
-                    blockToDraw.occupied = true;
-                }
+                // Set occupied property to true if the tetrimino is being placed onto the grid.
+                toBePlaced ? blockToDraw.occupied = true : blockToDraw.occupied = false;
+                
                 drawBlock(blockToDraw);
             }
         }
