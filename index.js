@@ -1,4 +1,4 @@
-import {initialiseGrid, clearGrid, GRID_COLS, GRID_ROWS, renderGrid} from "./grid.js";
+import {GRID_ROWS, GRID_COLS, initialiseGrid, clearGrid, renderGrid} from "./grid.js";
 import {drawTetrimino, generateRandomTetrimino, checkLeftCollision, checkRightCollision, checkVerticalCollision, fetchNextRotation} from "./tetrimino.js";
 
 const GRID = document.getElementById("grid");
@@ -46,9 +46,7 @@ function handleKeyInput(event) {
             // if there is no left collision, render the block in the new position!
             if (checkLeftCollision(activeTetrimino[0], currentRow, currentCol) === false) {
                 currentCol--; // Decrement column to reflect shape moving left by one block
-                clearGrid();
-                renderGrid();
-                drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+                refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
 
@@ -56,9 +54,7 @@ function handleKeyInput(event) {
             // if there is no right collision, render the block in the new position!
             if (checkRightCollision(activeTetrimino[0], currentRow, currentCol) === false) {
                 currentCol++; // Increment column to reflect shape moving right by one block
-                clearGrid();
-                renderGrid();
-                drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+                refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
         
@@ -70,10 +66,15 @@ function handleKeyInput(event) {
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
                 activeTetrimino[0] = proposedTetriminoRotation; // Update the shape to the new proposed shape
                 activeTetrimino[3]++; // increment the rotation index to reflect the new tetrimino orientation
-                clearGrid();
-                renderGrid();
-                drawTetrimino(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
+                refreshFrame(activeTetrimino[0], activeTetrimino[1], currentRow, currentCol, false);
             }
             break;
+    }
+
+    // Helper function that runs the necessary functions to refresh the frame when an event occurs.
+    function refreshFrame(tetriminoShape, tetriminoColour, row, column, toBePlaced) {
+        clearGrid();
+        renderGrid();
+        drawTetrimino(tetriminoShape, tetriminoColour, row, column, toBePlaced);
     }
 }
