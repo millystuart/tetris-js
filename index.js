@@ -15,7 +15,7 @@ let currentCol = 3;
 
 // activeTetrimino = [tetriminoShape, tetriminoColour, tetriminoIndex, tetriminoRotationIndex]
 // tetriminoShape = [[1...0], etc.], tetriminoColour = (e.g.) RED, tetriminoIndex = (e.g.) "S" and tetriminoRotationIndex = 0-3
-const activeTetrimino = [];
+let activeTetrimino = [];
 
 initialiseGrid(GRID_ROWS, GRID_COLS, GRID);
 
@@ -87,7 +87,7 @@ function handleKeyInput(event) {
             // Note that there is no need to check vertical collisions as they are checked by the left/right collision functions internally.
             if (!checkLeftCollision(proposedTetriminoRotation, currentRow, currentCol) &&
                 !checkRightCollision(proposedTetriminoRotation, currentRow, currentCol)) {
-                    
+
                 // Actually update the shape to the new orientation.
                 activeTetrimino[0] = proposedTetriminoRotation;
 
