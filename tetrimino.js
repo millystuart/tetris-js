@@ -257,12 +257,8 @@ export function fetchNextRotation(tetriminoKey, currentRotation) {
     // Retrieve the tetrimino object based on the passed key so that its four rotation states can be fetched.
     const tetriminoObject = TETRIMINOS[tetriminoKey];
 
-    if (currentRotation === 3) {
-        // Reset back to 0 if the tetrimino is at the final rotation index (full circle).
-        currentRotation = 0;
-    }
-    else {
-        currentRotation++;
-    }
-    return (tetrimino.rotations[currentRotation]);
+    // Reset back to 0 if the tetrimino is at the final rotation index (full circle), otherwise increment as usual.
+    currentRotation === 3 ? currentRotation = 0 : currentRotation++;
+
+    return (tetriminoObject.rotations[currentRotation]);
 }
