@@ -195,11 +195,21 @@ export function checkVerticalCollision(tetriminoShape, rowToCheck, colToCheck) {
                 const blockPosRow = rowToCheck + row;
                 const blockPosCol = colToCheck + col;
 
+                // Check if the position to be checked is within the grid boundaries.
+                if (blockPosRow >= GRID_ROWS || blockPosCol >= GRID_COLS || 
+                    blockPosCol < 0 || blockPosRow < 0) {
+                    return true;
+                }
+
                 // If a vertical collision is detected, the block must be placed.
                 if ((blockPosRow + 1) >= GRID_ROWS) { // Meaning that piece is at the bottom of the grid.
                     return true;
                 }
-                if ((gridBlocks[blockPosRow + 1][blockPosCol]).occupied) { // Meaning that there is an occupied block below.
+
+                // Only check the block below is occupied if position is valid.
+                if (gridBlocks[blockPosRow + 1] && 
+                    gridBlocks[blockPosRow + 1][blockPosCol] && 
+                    gridBlocks[blockPosRow + 1][blockPosCol].occupied) {
                     return true;
                 }
             }
@@ -239,10 +249,15 @@ export function checkRightCollision(tetriminoShape, rowToCheck, colToCheck) {
                 const blockPosRow = rowToCheck + row;
                 const blockPosCol = colToCheck + col;
 
-                if ((blockPosCol + 1) >= GRID_COLS) { // Meaning that we're at the rightmost column.
+                // Check if the current position or next position is out of bounds
+                if (blockPosCol >= GRID_COLS || (blockPosCol + 1) >= GRID_COLS) {
                     return true;
                 }
-                else if ((gridBlocks[blockPosRow][blockPosCol + 1]).occupied) { // Meaning that there is an occupied block to the right.
+
+                // Only check if the block to the right is occupied if position is valid.
+                if (gridBlocks[blockPosRow] && 
+                    gridBlocks[blockPosRow][blockPosCol + 1] && 
+                    gridBlocks[blockPosRow][blockPosCol + 1].occupied) {
                     return true;
                 }
             }
